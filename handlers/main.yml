@@ -1,0 +1,20 @@
+---
+# handlers file for ansible-smartstack
+
+- name: restart synapse
+  service: 
+    name=synapse
+    state=restarted
+    enabled=true
+
+- name: restart nerve
+  service: 
+    name=nerve
+    state=restarted
+    enabled=true
+
+- name: reload serf
+  service: 
+    name=serf
+    state=reloaded
+    enabled=true    

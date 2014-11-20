@@ -1,0 +1,16 @@
+---
+nerve_install                           : True
+synapse_install                         : False    
+selected_services                       : [ "postgresql" ]
+serf_masters                            : [ "192.168.56.150", "192.168.56.151"]
+serf_bind                               : "{{service_ip}}"
+ip_match_enabled                        : True
+ip_match_rules                          :
+                                            - regx      : "192.168.56.*"
+                                              reg_match : true
+#####
+#Since this is a demo we will make a list of packages to install
+packages_to_install                     : 
+                                           - "postgresql"
+###
+ruby_install                            : True

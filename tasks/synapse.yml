@@ -1,0 +1,61 @@
+---
+# tasks file for ansible-smartstack
+
+- set_fact: colon=":"
+
+- name: synapse | Create synapse directories
+  file: 
+   path="{{synapse_home}}"
+   owner="{{smartstack_user}}"
+   group="{{smartstack_user}}"
+   mode=0755
+   state=directory
+
+- name: synapse | Create sudoers file to allow synapse to restart haproxy
+  copy: 
+   content="{{smartstack_user}} ALL= NOPASSWD{{colon}} /usr/sbin/service haproxy reload\n"
+   dest="/etc/sudoers.d/{{smartstack_user}}"
+   owner="root"
+   group="root"
+   mode=0440
+
+- name: synapse | Get synapse from git
+  git:
+      repo="{{synapse_repository}}"
+      dest="{{synapse_install_dir}}"
+      force=no
+      version="{{synapse_reference}}"
+      accept_hostkey=true
+  sudo_user: "{{smartstack_user}}"
+
+- name: synapse | Install synapse
+  shell: bundle install --without development 
+  args:
+    chdir: "{{synapse_install_dir}}"
+  environment: smartstack_env_variable
+  sudo_user: "{{smartstack_user}}"
+
+#Maybe include in common only rather in synapse and nerve
+- name: synapse | Include services variable file
+  include_vars: "{{smartstack_services_files}}"
+
+- name: synapse | Deploy configuration file
+  template:
+    src=synapse_config.json.j2
+    dest="{{synapse_home}}/config.json"
+    mode=0640
+    owner="{{smartstack_user}}" 
+    group="{{smartstack_user}}"
+  notify: restart synapse
+
+- name: synapse | Deploy start script
+  template:
+    src=synapse_start.sh.j2
+    dest="{{synapse_home}}/synapse_start.sh"
+    mode=0755
+
+- name: synapse | Deploy init.d script
+  template:
+    src=synapse_init.sh.j2
+    dest="/etc/init.d/synapse"
+    mode=0755

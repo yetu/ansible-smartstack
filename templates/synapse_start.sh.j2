@@ -1,0 +1,4 @@
+#!/bin/bash
+cd {{synapse_install_dir}}
+export GEM_HOME={{smartstack_env_variable.GEM_HOME}}
+exec  bundle exec ./bin/synapse --config {{synapse_home}}/config.json >> {{synapse_log_file}} 2>&1

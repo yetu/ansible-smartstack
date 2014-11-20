@@ -1,0 +1,129 @@
+---
+
+# Following variables belongs to smartstack
+smartstack_user                     : "smartstack"
+smartstack_home                     : "/opt/smartstack"
+smartstack_env_variable             :
+                                      GEM_HOME: "{{smartstack_home}}/.gem"
+smartstack_services_files           : "services.yml"
+smartstack_base_log_dir             : "/var/log/smartstack"
+
+# Following variables belongs to nerve
+nerve_install                       : False                             
+nerve_home                          : "{{smartstack_home}}/nerve"
+nerve_log_file                      : "{{smartstack_base_log_dir}}/nerve.log"
+nerve_install_dir                   : "{{nerve_home}}/src"
+nerve_config_file                   : "{{nerve_home}}/config.json"
+nerve_repository                    : 'https://github.com/getyourguide/nerve.git'
+nerve_reference                     : 'production'
+nerve_host_announce                 :  "{{service_ip}}" ## Depands on ip_match
+nerve_local_port                    : 1025
+nerve_instance_id                   : "{{ansible_hostname}}"
+selected_services                   :  []
+
+# Following variables belongs to synapse
+synapse_install                     : False
+synapse_home                        : "{{smartstack_home}}/synapse"
+synapse_log_file                    : "{{smartstack_base_log_dir}}/synapse.log"
+synapse_install_dir                 : "{{synapse_home}}/src"
+synapse_config_file                 : "{{synapse_home}}/config.json"
+synapse_repository                  : 'https://github.com/getyourguide/synapse.git'
+synapse_reference                   : 'production'
+
+# Following variables belongs to haproxy
+haproxy_sock_dir                    : '/var/haproxy'
+haproxy_user                        : 'haproxy'
+haproxy_sock_file                   : "{{haproxy_sock_dir}}/stats.sock"
+haproxy_channel                     : "local1"
+haproxy_config_file_path            : "/etc/haproxy/haproxy.cfg"
+haproxy_config                      :
+                                      reload_command   : "sudo service haproxy reload"
+                                      config_file_path : "{{haproxy_config_file_path}}"
+                                      socket_file_path : "{{haproxy_sock_file}}"
+                                      do_writes        : true
+                                      do_reloads       : true
+                                      do_socket: true
+                                      global: 
+                                        - "daemon"
+                                        - "spread-checks 2"
+                                        - "user    haproxy"
+                                        - "group   haproxy"
+                                        - "maxconn 8192"
+                                        - "log     127.0.0.1 local1"
+                                        - "stats   socket {{haproxy_sock_file}} group {{smartstack_user}} mode 660 level admin"
+                                      defaults: 
+                                        - "log      global"
+                                        - "option   dontlognull"
+                                        - "option   log-separate-errors"
+                                        - "maxconn  2000"
+                                        - "timeout  connect 5s"
+                                        - "timeout  check   5s"
+                                        - "timeout  client  50s"
+                                        - "timeout  server  50s"
+                                        - "option   redispatch"
+                                        - "retries  3"
+                                        - "balance  roundrobin"
+                                      extra_sections: 
+                                        "listen stats :3212":
+                                           - "mode http"
+                                           - "stats enable"
+                                           - "stats uri /"
+
+# Following variables belongs to serf
+serf_home                           : "{{smartstack_home}}/serf"
+serf_install_dir                    : "{{serf_home}}/src"
+serf_config_dir                     : "/etc/serf"
+serf_config_file                    : "{{serf_config_dir}}/aaa_serf_config.json"
+serf_shasum                         : "e1be5b4f7bcf"
+serf_repository                     : "https://s3-eu-west-1.amazonaws.com/artifacts.gyg/serf/serf_{{serf_shasum}}"
+serf_destination                    : "{{serf_install_dir}}/serf_{{serf_shasum}}"
+serf_host                           : "localhost"
+serf_port                           : 7373
+serf_version                        : 0.6.3
+serf_log_file                       : "{{smartstack_base_log_dir}}/serf.log"
+serf_masters                        : [ ]
+serf_bind                           : "{{ansible_eth0.ipv4.address}}" ## Should we use smart IP match ?
+serf_encrypt_key                    : "my2QGv0gmoFQxh5suQaTSg=="
+serf_event_handler                  : "member-join,member-leave,member-failed,member-update=serf members -format json > /dev/shm/serf_members.json.$$ && mv /dev/shm/serf_members.json.$$ /dev/shm/serf_members.json"
+serf_default_config :
+                    node_name       : "{{ansible_hostname}}"
+                    start_join      : "{{serf_masters}}"
+                    encrypt_key     : "{{serf_encrypt_key}}"
+                    bind            : "{{serf_bind}}"
+                    profile         : "lan"
+                    snapshot_path   : "/dev/shm/serf_workfile"
+                    tags            : {}
+                    event_handlers  : [ "{{ serf_event_handler   }}" ]
+
+# Following variables belongs to IP_match
+##  Network:  192.168.56.0/24 (Class C)
+##  HostMin = 192.168.56.1 and HostMax = 192.168.56.254
+##  Rules are expresed in list:
+#ip_match_rules : 
+#                - regx      : "192.168.56.*"
+#                  reg_match : false
+#                - regx      : "192.168.56.*"
+#                  reg_match : true
+#
+## The above 2 rules are expressed as following
+##  First rule match any ip that "is not" 192.168.56.* 
+##  if first rule fails second rule say match any ip that is 192.168.56.* 
+##  The logic is :
+##     - we try to match any IP that is not in our private vpn network 
+##     - if that rule fails then we use our private vpn IP
+ip_match_enabled : False
+ip_match_rules   : 
+                - regx      : "192.168.56.*"
+                  reg_match : false
+
+                - regx      : "192.168.56.*"
+                  reg_match : true
+
+ip_fallback      : False  # if my match rules dont work just match the first IP
+
+# Following variables belongs ruby
+ruby_install                : False
+ruby_version                : 2.0
+
+
+

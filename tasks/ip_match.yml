@@ -1,0 +1,24 @@
+---
+
+- name: ip_match | Get IP list
+  set_fact:
+    server_ips: "{{ansible_all_ipv4_addresses}}"
+  when: service_ip is not defined or service_ip == ""
+
+- name: ip_match | Extract IP (1) match rule  
+  set_fact:
+    service_ip="{{ lookup('template', '../templates/ip_match.j2')}}"
+  when: service_ip is not defined or service_ip == ""
+
+- name: ip_match | Extract IP (2) Fallback get the first ip you find :(  
+  set_fact: 
+    service_ip="{{server_ips[0]}}"
+  when: service_ip is not defined or service_ip == "" and ip_fallback
+  
+- name: ip_match | Extract IP (3) Failed
+  fail: msg="Could not set IP in {{server_ips}} that match rules. Please check your rules."
+  when: service_ip is not defined or service_ip == ""
+
+- name: ip_match | Matched service_ip 
+  debug: 
+    msg="Will use the following IP {{service_ip}}"

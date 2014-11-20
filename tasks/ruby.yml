@@ -1,0 +1,35 @@
+---
+
+- name: ruby | install ansible dependencies
+  apt:
+    pkg: python-pycurl
+    state: installed
+
+- name: ruby | add brightbox ppa for ruby
+  apt_repository:
+    repo: 'ppa:brightbox/ruby-ng-experimental'
+    state: present
+  register: new_ppa
+
+- name: apt update if new ppa added
+  apt:
+      update-cache: yes
+  when: new_ppa | changed
+
+- name: ruby | install ruby and build-essential
+  apt:
+    pkg: "{{ item }}"
+    state: installed
+  with_items:
+    - "ruby{{ ruby_version }}"
+    - "ruby{{ ruby_version }}-dev"
+    - ruby-switch
+    - build-essential
+
+- name: ruby | set ruby as default
+  shell: "ruby-switch --set ruby{{ ruby_version }}"
+  register: ruby_switch
+  changed_when : ruby_switch.stdout != ""
+
+- name: ruby | install bundler
+  shell: gem install bundler

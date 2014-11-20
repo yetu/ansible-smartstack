@@ -1,0 +1,28 @@
+---
+- name: haproxy | Install haproxy
+  apt: 
+   name="haproxy"
+
+- name: haproxy | Create configuration file
+  file: 
+   path="{{haproxy_config_file_path}}"
+   owner="{{haproxy_user}}"
+   group="{{smartstack_user}}"
+   mode=0664
+   state=touch
+
+- name: haproxy | Create socket directory
+  file: 
+   path="{{haproxy_sock_dir}}"
+   owner="{{haproxy_user}}"
+   group="{{haproxy_user}}"
+   mode=0755
+   state=directory
+
+- name: haproxy | Create /etc/default/haproxy file
+  copy: 
+   content="ENABLED=1"
+   dest="/etc/default/haproxy"
+   owner="root"
+   group="root"
+   mode=0444

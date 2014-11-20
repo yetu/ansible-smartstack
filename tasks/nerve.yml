@@ -1,0 +1,43 @@
+---
+# tasks file for ansible-smartstack
+
+- name: nerve | Get nerve from git
+  git:
+      repo="{{nerve_repository}}"
+      dest="{{nerve_install_dir}}"
+      force=no
+      version="{{nerve_reference}}"
+      accept_hostkey=true
+  sudo_user: "{{smartstack_user}}"
+
+- name: nerve | Install nerve
+  shell: bundle install --without development 
+  args:
+    chdir: "{{nerve_install_dir}}"
+  environment: smartstack_env_variable
+  sudo_user: "{{smartstack_user}}"
+
+#Maybe include in common only rather in synapse and nerve
+- name: nerve | Include services variable file
+  include_vars: "{{smartstack_services_files}}"
+
+- name: nerve | Deploy configuration file
+  template:
+    src=nerve_config.json.j2
+    dest="{{nerve_home}}/config.json"
+    mode=0640
+    owner="{{smartstack_user}}" 
+    group="{{smartstack_user}}"
+  notify: restart nerve
+
+- name: nerve | Deploy start script
+  template:
+    src=nerve_start.sh.j2
+    dest="{{nerve_home}}/nerve_start.sh"
+    mode=0755
+
+- name: nerve | Deploy init.d script
+  template:
+    src=nerve_init.sh.j2
+    dest="/etc/init.d/nerve"
+    mode=0755

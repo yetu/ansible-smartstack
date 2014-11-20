@@ -1,0 +1,4 @@
+#!/bin/bash
+cd {{nerve_install_dir}}
+export GEM_HOME={{smartstack_env_variable.GEM_HOME}}
+exec  bundle exec ./bin/nerve --config {{nerve_home}}/config.json >> {{nerve_log_file}} 2>&1

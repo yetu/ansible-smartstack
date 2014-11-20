@@ -1,0 +1,11 @@
+# {{ansible_managed}}
+{
+  "services": {
+{% for service in selected_services %}
+    "{{service}}": 
+         {{ services[service].synapse | to_nice_json }}
+   {% if loop.index == selected_services | length - 1 %},{% endif %}
+{% endfor %}
+  },
+  "haproxy": {{ haproxy_config | to_nice_json }}
+}

@@ -1,0 +1,59 @@
+---
+#
+# This playbook deploys your keys to the vagrant
+#
+
+- name: Provision my keys
+  hosts: all
+  sudo: True
+  vars_files:
+    - "{{inventory_hostname}}-var.yml"
+## If you dont want the run to fail if file does not exisit 
+#    - [ "{{inventory_hostname}}-var.yml", "defaults-var.yml" ]
+  vars:
+    localuser: "{{ lookup('ENV','USER') }}"
+
+  pre_tasks:
+    - name: Create your local user
+      user:
+        name="{{localuser}}"
+        home="/home/{{localuser}}"
+        shell="/bin/bash"
+        append="true"
+        group="admin"
+        comment="{{localuser}}"
+
+    - name: Putting you authorized_key
+      authorized_key:
+        key="{{lookup('file', '~/.ssh/id_rsa.pub')}}"
+        user="{{localuser}}"
+        manage_dir=yes
+      ignore_errors: yes
+
+    - name: Update apt cache
+      apt:
+        update_cache=yes
+
+    - name: Install demo packages
+      apt:
+        name="{{item}}"  
+      with_items: packages_to_install
+      when : packages_to_install is defined
+
+    - name : postgresql
+      lineinfile: 
+        dest=/etc/postgresql/9.1/main/postgresql.conf
+        regexp='^listen_addresses' 
+        line="listen_addresses = '*'"
+      register: postgresql_conf
+      when: "'postgresql' in packages_to_install"
+
+    - name : postgresql
+      service: 
+        name=postgresql
+        state=restarted
+      register: postgresql_conf
+      when: "'postgresql' in packages_to_install and postgresql_conf | changed"
+
+  roles :
+    - ansible-smartstack

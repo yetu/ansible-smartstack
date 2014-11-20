@@ -1,0 +1,51 @@
+---
+
+- name: serf | Create serf home and config directories
+  file: 
+   path="{{item}}"
+   owner="{{smartstack_user}}"
+   group="{{smartstack_user}}"
+   mode=0755
+   state=directory
+  with_items:
+   - "{{ serf_home }}"
+   - "{{ serf_config_dir }}"
+   - "{{ serf_install_dir }}"
+
+- name: serf | Download serf
+  get_url: 
+    url="{{serf_repository}}"
+    dest="{{serf_destination}}"
+    mode=0750
+    owner="{{smartstack_user}}"
+    group="{{smartstack_user}}" 
+
+- name: serf | Link the serf the installed version
+  file: 
+   src="{{serf_destination}}" 
+   dest="/usr/bin/serf"
+   state="link"
+
+##TODO Delete all installation
+
+
+- name: serf | Copy configuration file
+  copy: 
+   content='{{ serf_default_config | to_nice_json }}'
+   dest="{{serf_config_file}}"
+   owner="{{smartstack_user}}" 
+   group="{{smartstack_user}}" 
+   mode=0755 
+  notify: reload serf
+
+- name: serf | Deploy start script
+  template:
+    src=serf_start.sh.j2
+    dest="{{serf_home}}/serf_start.sh"
+    mode=0755
+
+- name: serf | Deploy init.d script
+  template:
+    src=serf_init.sh.j2
+    dest="/etc/init.d/serf"
+    mode=0755

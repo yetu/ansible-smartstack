@@ -1,0 +1,22 @@
+# {{ansible_managed}}
+{
+  "instance_id": "{{nerve_instance_id}}",
+  "listen_port": {{nerve_local_port}},
+  "services": {
+{% for service in selected_services %}
+    "{{service}}_{{services[service].nerve.port}}": {
+{% for key, value in services[service].nerve.iteritems() %}
+{% if value is string %}
+        "{{key}}" : "{{ value }}",
+{% else %}
+        "{{key}}" : {{ value | replace("'", "\"") }},
+{% endif %}
+{% endfor %}
+        "zk_hosts" :  [ "{{serf_host}}:{{serf_port}}" ],
+        "zk_path" : "/_default/services/{{service}}/services",
+        "host" : "{{nerve_host_announce}}",
+        "ports": [ "{{ services_ports[service] }}" ]
+    }{% if loop.index == selected_services | length - 1 %},{% endif %}
+{% endfor %}
+  }
+}

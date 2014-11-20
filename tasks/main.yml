@@ -1,0 +1,27 @@
+---
+
+- include : common.yml
+  tags: [ nerve, synapse, serf ]
+
+- include : ruby.yml
+  when: ruby_install  
+  tags: [ nerve, synapse, serf ]
+
+- include : ip_match.yml 
+  when: ip_match_enabled
+  tags: [ nerve, synapse, serf ]
+
+- include : serf.yml 
+  tags: [ nerve, synapse, serf ]
+
+- include : nerve.yml
+  when: nerve_install
+  tags: [ nerve ]
+
+- include : haproxy.yml 
+  when: synapse_install
+  tags: [ synapse ]
+
+- include : synapse.yml 
+  when: synapse_install
+  tags: [ synapse ]

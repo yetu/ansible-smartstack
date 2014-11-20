@@ -1,0 +1,107 @@
+#!/bin/bash
+
+NAME="nerve"
+DESC="nerve-service"
+
+RUN_AS_USER="{{smartstack_user}}"
+RUN_AS_GROUP="{{smartstack_user}}"
+BASE_DIR="{{nerve_install_dir}}"
+
+GREP_NAME="bin/nerve"
+
+ExecFile="{{nerve_home}}/nerve_start.sh"
+
+
+STOPCMD="kill -9"
+#How many sec to wait before checking if proc is up
+SLEEP_FOR=1
+
+IGNORE_PLAY_PID=1
+
+JAVA_PID() {
+	check_java="$(ps aux| grep -e $GREP_NAME | grep -v grep | awk '{ print $2 }' )"
+    echo $check_java
+}
+
+start() {
+	PID=$(JAVA_PID)
+	if  [ -n "$PID" ] ; then
+		echo "$NAME is already running (PID: $PID)"
+	else
+		echo -n  "Starting $NAME "
+		[ $IGNORE_PLAY_PID  == 1 ] && rm -f $BASE_DIR/RUNNING_PID
+        #Start quite background uid and gid
+		start-stop-daemon --start --quiet --background --name $NAME --chdir $BASE_DIR --chuid $RUN_AS_USER --group $RUN_AS_GROUP --exec $ExecFile
+
+		[ "$?" -ne 0 ] && echo "[ FAILED ]" && return 1
+		let kwait=$SLEEP_FOR
+		count=0;
+		until [ $count -gt $kwait ]
+	    do
+			echo -n "."
+			sleep 1
+			let count=$count+1;
+		done
+		PID=$(JAVA_PID)
+		if [ -n "$PID" ]; then
+			echo "[ OK ]"
+			return 0
+		else
+			echo "[ FAILED ]"
+			return 1
+		fi
+	fi
+}
+
+stop() {
+	PID=$(JAVA_PID)
+	if [ -n "$PID" ]; then
+	    echo -n  "Stoping $NAME "
+		kill -9 $PID
+		[ "$?" -ne 0 ] && echo "[ FAILED ]" && return 1
+
+		let kwait=$SLEEP_FOR
+	    count=0;
+	    until [ $count -gt $kwait ]
+	    do
+    	  echo -n ".";
+	      sleep 1
+    	  let count=$count+1;
+	    done
+    	PID=$(JAVA_PID)
+		if [ -n "$PID" ]; then
+			echo "[ FAILED ]"
+			return 1
+		else
+			echo "[ OK ]"
+			return 1
+		fi
+	else
+        echo "$NAME not running."
+    fi
+}
+
+status() {
+	PID=$(JAVA_PID)
+	if [ -n "$PID" ]; then
+    	echo "$NAME is running with PID:$PID"
+	else
+		echo "$NAME is not running"
+	fi
+}
+
+case "$1" in
+ start)
+        start ;;
+ stop)
+        stop ;;
+ restart)
+       stop
+       start ;;
+ status)
+       status ;;
+*)
+        echo "Usage: $0 {start|stop|restart|status}"
+        exit 1 ;;
+esac
+exit 0

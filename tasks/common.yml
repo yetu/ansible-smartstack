@@ -1,0 +1,21 @@
+---
+- name : common | Create smartstack user
+  user : 
+    name="{{smartstack_user}}" 
+    shell="/bin/bash"
+    home="{{smartstack_home}}"
+    createhome="yes"        
+    #shell="/sbin/nologin"
+- name: common | Install git 
+  apt:
+     name="{{item}}"
+  with_items:
+   - git
+
+- name: common | Create base log directory
+  file: 
+   path="{{smartstack_base_log_dir}}"
+   owner="{{smartstack_user}}"
+   group="{{smartstack_user}}"
+   mode=0755
+   state=directory

@@ -1,0 +1,8 @@
+{% set break = [] %}
+{% for ip_match_rule in ip_match_rules if break|length == 0 %}
+{% for ip in server_ips if break|length == 0 %}
+{% if ip|match(ip_match_rule.regx) == ip_match_rule.reg_match %}
+{{ip -}}{% if break.append(1) %}{% endif %}
+{% endif %}
+{% endfor %}
+{% endfor %}
