@@ -9,7 +9,7 @@
    owner="{{haproxy_user}}"
    group="{{smartstack_user}}"
    mode=0664
-   state=touch
+   state="file"
 
 - name: haproxy | Create socket directory
   file: 

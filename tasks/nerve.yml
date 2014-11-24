@@ -15,9 +15,11 @@
   args:
     chdir: "{{nerve_install_dir}}"
   environment: smartstack_env_variable
+  register: nerve_bundle_install
+  changed_when: nerve_bundle_install.stdout.find('Installing') != -1
   sudo_user: "{{smartstack_user}}"
 
-#Maybe include in common only rather in synapse and nerve
+  #Maybe include in common only rather in synapse and nerve
 - name: nerve | Include services variable file
   include_vars: "{{smartstack_services_files}}"
 
