@@ -33,6 +33,8 @@
   args:
     chdir: "{{synapse_install_dir}}"
   environment: smartstack_env_variable
+  register: synapse_bundle_install
+  changed_when: synapse_bundle_install.stdout.find('Installing') != -1  
   sudo_user: "{{smartstack_user}}"
 
 #Maybe include in common only rather in synapse and nerve

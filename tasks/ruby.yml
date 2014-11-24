@@ -32,4 +32,6 @@
   changed_when : ruby_switch.stdout != ""
 
 - name: ruby | install bundler
-  shell: gem install bundler
+  gem: 
+    name="bundler"
+    state="present"

@@ -17,7 +17,7 @@ Vagrant.configure("2") do |config|
       cfg.vm.host_name = name
 
       #Comment public network to disable bridge
-      cfg.vm.network :public_network
+      #cfg.vm.network :public_network
       cfg.vm.network :private_network, ip: vmip
 
 	    cfg.ssh.forward_agent = true
