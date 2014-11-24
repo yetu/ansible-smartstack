@@ -13,14 +13,15 @@ This role uses the [getyourguide](https://github.com/getyourguide) smartstack fo
 The role will use serf instead of zookeeper.
 
 ## How it Works
- * Nerve checks the services(e.g. postgresql server) that you want and announces to serf, whether it is working or not.
- * Serf communicates this information to the other nodes via gossip protocol
- * Synapse figures out which services(e.g. postgresql server) are running and configures HAProxy for load balancing (e.g. postgresql client) 
+ * Assumption : There are two services, Service-A and Service-B. There are n numbers of Service-A which Service-B connects it.
+ * Nerve run on every instance of Service-A and announces that service is up and running via serf
+ * Serf communicates this information to the other members via gossip protocol
+ * Synapse which runs on Service-B get this information from serf and and configures HAProxy
+ * Service-B now can connect to list of Service-A. If there is a new instance of Service-A this will be added into the HAProxy.
+ * If one of them fail will be removed from the HAProxy.
+ 
 
-That means, Serf is required both for nerve and synapse and Haproxy is required only for synapse
-
-
-
+That means, Serf is required both for nerve and synapse and Haproxy is required only for synapse.
 
 
 ## Requirements
@@ -80,7 +81,7 @@ demo2 (192.168.56.151)
 From demo1 or demo2 type  ```serf members```
 
 ###To check haproxy stats page
-http://192.168.56.151:3212/
+[http://192.168.56.151:3212/]
 
 ### Simulate failure serf failure
 ```sudo service serf stop``` then ```serf members```
