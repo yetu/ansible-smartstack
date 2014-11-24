@@ -82,7 +82,7 @@ demo2 (192.168.56.151)
 From demo1 or demo2 type  ```serf members```
 
 ###To check haproxy stats page
-[http://192.168.56.151:3212/]
+http://192.168.56.151:3212/
 
 ### Simulate failure serf failure
 ```sudo service serf stop``` then ```serf members```
