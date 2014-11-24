@@ -86,7 +86,7 @@ From demo1 or demo2 type  ```serf members```
 ```sudo service serf stop``` then ```serf members```
 
 ### Simulate postgresql faliure 
-on demo2  ```sudo service postgresql stop``` then head to [http://192.168.56.151:3212/]
+on demo2  ```sudo service postgresql stop``` then head to http://192.168.56.151:3212/
 
 ## License
 MIT
