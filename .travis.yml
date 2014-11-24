@@ -11,21 +11,22 @@ install:
   - pip install ansible
 
   # Add ansible.cfg to pick up roles path. and inventory file
-  - "printf '[defaults]\nroles_path = ../' > ansible.cfg"
-  - "printf 'localhost  ansible_connection=local' > local.ini"
+  - echo -e '[defaults]\nroles_path = ../' > ansible.cfg
+  - echo 'localhost  ansible_connection=local' > tests/local.ini
+
 script:
     # 1st: check syntax
-    - ansible-playbook -i local.initests/test1.yml --syntax-check
-
+    - echo "***************************** SYNTAX CHECK (1) *****************************"
+    - ansible-playbook -i tests/local.ini tests/test1.yml --syntax-check
     # 2nd:  Make sure we run the entire playbook
-    - ansible-playbook -i local.ini tests/test1.yml --sudo
-
+    - echo "***************************** RUN PLAY (2) *****************************"    
+    - ansible-playbook -i tests/local.ini tests/test1.yml --sudo -vvvv
     # 3rd:  Make sure our playbook is idempotent 
+    - echo "***************************** Idempotence test (3) *****************************"     
     - >
-      ansible-playbook -i local.ini tests/test1.yml --sudo
+      ansible-playbook -i tests/local.ini tests/test1.yml --sudo -vvvv
       | grep -q 'changed=0.*failed=0'
       && (echo 'Idempotence test: pass' && exit 0)
       || (echo 'Idempotence test: fail' && exit 1)
-
     # 4th:  Application test (TODO)
     #- ./tests/test_logs.sh
