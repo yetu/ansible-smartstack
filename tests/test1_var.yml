@@ -1,0 +1,13 @@
+nerve_install                           : True
+synapse_install                         : True    
+selected_services                       : [ "postgresql" ]
+serf_masters                            : [ "127.0.0.1" ]
+serf_bind                               : "{{ansible_all_ipv4_addresses}}"
+ip_match_enabled                        : True
+ip_fallback                             : True
+ip_match_rules                          :
+                                            - regx      : "192.168.*"
+                                              reg_match : true
+packages_to_install                     : 
+                                           - "postgresql"
+ruby_install                            : True
