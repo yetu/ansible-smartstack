@@ -2,10 +2,10 @@
 - name : common | Create smartstack user
   user : 
     name="{{smartstack_user}}" 
-    shell="/bin/bash"
+    shell="/sbin/nologin"
     home="{{smartstack_home}}"
     createhome="yes"        
-    #shell="/sbin/nologin"
+    
 - name: common | Install git 
   apt:
      name="{{item}}"
