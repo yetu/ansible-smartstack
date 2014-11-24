@@ -9,5 +9,8 @@ galaxy_info:
   - name: Ubuntu
     versions:
        - precise
-
+  categories:
+  - clustering
+  - monitoring
+  - networking
 dependencies: []
