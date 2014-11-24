@@ -34,4 +34,5 @@
 - name: ruby | install bundler
   gem: 
     name="bundler"
+    user_install="no"
     state="present"
