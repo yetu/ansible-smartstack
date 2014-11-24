@@ -8,6 +8,12 @@ smartstack_env_variable             :
 smartstack_services_files           : "services.yml"
 smartstack_base_log_dir             : "/var/log/smartstack"
 
+#If you are using different stages such as dev,prod
+# you should set this tag
+# This tag will be appended at the end of the each service only if is set
+# so you could have servers such as postgres_dev, postgres_prod
+smartstack_tag                      : ""
+
 # Following variables belongs to nerve
 nerve_install                       : False                             
 nerve_home                          : "{{smartstack_home}}/nerve"

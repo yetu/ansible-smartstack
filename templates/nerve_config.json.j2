@@ -4,7 +4,11 @@
   "listen_port": {{nerve_local_port}},
   "services": {
 {% for service in selected_services %}
+    {% if smartstack_tag is not defined or smartstack_tag == "" %}
     "{{service}}_{{services[service].nerve.port}}": {
+    {% else %}
+    "{{service}}_{{smartstack_tag}}_{{services[service].nerve.port}}": {
+    {% endif %}
 {% for key, value in services[service].nerve.iteritems() %}
 {% if value is string %}
         "{{key}}" : "{{ value }}",

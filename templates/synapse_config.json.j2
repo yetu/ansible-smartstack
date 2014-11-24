@@ -2,7 +2,11 @@
 {
   "services": {
 {% for service in selected_services %}
-    "{{service}}": 
+    {% if smartstack_tag is not defined or smartstack_tag == "" %}
+    "{{service}}" : 
+    {% else %}
+    "{{service}}_{{smartstack_tag}}" : 
+    {% endif %}
          {{ services[service].synapse | to_nice_json }}
    {% if loop.index == selected_services | length - 1 %},{% endif %}
 {% endfor %}
