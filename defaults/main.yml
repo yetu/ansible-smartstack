@@ -94,7 +94,7 @@ serf_encrypt_key                    : "my2QGv0gmoFQxh5suQaTSg=="
 serf_event_handler                  : "member-join,member-leave,member-failed,member-update=serf members -format json > /dev/shm/serf_members.json.$$ && mv /dev/shm/serf_members.json.$$ /dev/shm/serf_members.json"
 serf_default_config :
                     node_name       : "{{ansible_hostname}}"
-                    start_join      : "{{serf_masters}}"
+                    retry_join      : "{{serf_masters}}"
                     encrypt_key     : "{{serf_encrypt_key}}"
                     bind            : "{{serf_bind}}"
                     profile         : "lan"
