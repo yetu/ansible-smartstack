@@ -45,10 +45,10 @@ start() {
 		PID=$(JAVA_PID)
 		if [ -n "$PID" ]; then
 			echo "[ OK ]"
-			exit 0
+			return 0
 		else
 			echo "[ FAILED ]"
-			exit 1
+			return 1
 		fi
 	fi
 }
