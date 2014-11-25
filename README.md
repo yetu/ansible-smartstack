@@ -98,6 +98,11 @@ on demo2  ```sudo service postgresql stop``` then head to http://192.168.56.151:
 ## License
 MIT
 
-## Contributors (sorted alphabetically)
+## TODOs
+
+* a service guarantee (runit, monit, ...)
+
+## Contributors (sorted alphabetically on the first name)
 * [Adham Helal](https://github.com/ahelal)
 * [Engin Yoeyen](https://github.com/enginyoyen)
+* [Joé Schaul](https://github.com/jschaul)
