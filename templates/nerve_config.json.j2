@@ -3,7 +3,7 @@
   "instance_id": "{{nerve_instance_id}}",
   "listen_port": {{nerve_local_port}},
   "services": {
-{% for service in selected_services %}
+{% for service in nerve_selected_services %}
     {% if smartstack_tag is not defined or smartstack_tag == "" %}
     "{{service}}_{{services[service].nerve.port}}": {
     {% else %}
@@ -20,7 +20,7 @@
         "zk_path" : "/_default/services/{{service}}/services",
         "host" : "{{nerve_host_announce}}",
         "ports": [ "{{ services_ports[service] }}" ]
-    }{% if loop.index == selected_services | length - 1 %},{% endif %}
+    }{% if loop.index == nerve_selected_services | length - 1 %},{% endif %}
 {% endfor %}
   }
 }

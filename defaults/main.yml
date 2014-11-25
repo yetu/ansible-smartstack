@@ -25,7 +25,7 @@ nerve_reference                     : 'production'
 nerve_host_announce                 :  "{{service_ip}}" ## Depands on ip_match
 nerve_local_port                    : 1025
 nerve_instance_id                   : "{{ansible_hostname}}"
-selected_services                   :  []
+nerve_selected_services             :  []
 
 # Following variables belongs to synapse
 synapse_install                     : False
@@ -35,6 +35,7 @@ synapse_install_dir                 : "{{synapse_home}}/src"
 synapse_config_file                 : "{{synapse_home}}/config.json"
 synapse_repository                  : 'https://github.com/getyourguide/synapse.git'
 synapse_reference                   : 'production'
+synapse_selected_services           :  []
 
 # Following variables belongs to haproxy
 haproxy_sock_dir                    : '/var/haproxy'

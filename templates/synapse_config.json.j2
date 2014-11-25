@@ -1,14 +1,14 @@
 # {{ansible_managed}}
 {
   "services": {
-{% for service in selected_services %}
+{% for service in synapse_selected_services %}
     {% if smartstack_tag is not defined or smartstack_tag == "" %}
     "{{service}}" : 
     {% else %}
     "{{service}}_{{smartstack_tag}}" : 
     {% endif %}
          {{ services[service].synapse | to_nice_json }}
-   {% if loop.index == selected_services | length - 1 %},{% endif %}
+   {% if loop.index == synapse_selected_services | length - 1 %},{% endif %}
 {% endfor %}
   },
   "haproxy": {{ haproxy_config | to_nice_json }}

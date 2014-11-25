@@ -47,9 +47,14 @@ If you would like to install synapse
 	synapse_install         : True
 
 
-You also have to give the list of your services that you want it to be available, for instance if you would like to 
+You also have to give the list of services that you want to make available, for instance if you would like to announce the postgres service
 
-	selected_services       : [ "postgresql" ]
+	nerve_selected_services       : [ "postgresql" ]
+	
+	
+You also have to give the list of services that you want to connect to / use, for instance if you would like to connect to a memcache service running on another server:
+
+	synapse_selected_services       : [ "memcache" ]
 
 You also need to define the services that you need, an example how services can be defined can be found at 
 
