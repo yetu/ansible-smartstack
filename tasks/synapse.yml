@@ -13,7 +13,7 @@
 
 - name: synapse | Create sudoers file to allow synapse to restart haproxy
   copy: 
-   content="{{smartstack_user}} ALL= NOPASSWD{{colon}} /usr/sbin/service haproxy reload\n"
+   content="{{smartstack_user}} ALL=NOPASSWD{{colon}}/usr/sbin/service haproxy reload\n"
    dest="/etc/sudoers.d/{{smartstack_user}}"
    owner="root"
    group="root"
