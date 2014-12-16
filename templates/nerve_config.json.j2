@@ -20,7 +20,7 @@
         "zk_path" : "/_default/services/{{service}}/services",
         "host" : "{{nerve_host_announce}}",
         "ports": [ "{{ services_ports[service] }}" ]
-    }{% if loop.index == nerve_selected_services | length - 1 %},{% endif %}
+    }{% if loop.index <=nerve_selected_services | length - 1 %},{% endif %}
 {% endfor %}
   }
 }
