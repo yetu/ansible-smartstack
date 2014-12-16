@@ -8,7 +8,7 @@
     "{{service}}_{{smartstack_tag}}" : 
     {% endif %}
          {{ services[service].synapse | to_nice_json }}
-   {% if loop.index == synapse_selected_services | length - 1 %},{% endif %}
+   {% if loop.index <= synapse_selected_services | length - 1 %},{% endif %}
 {% endfor %}
   },
   "haproxy": {{ haproxy_config | to_nice_json }}
