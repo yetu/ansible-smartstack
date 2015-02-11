@@ -24,9 +24,9 @@ script:
     # 3rd:  Make sure our playbook is idempotent 
     - echo "***************************** Idempotence test (3) *****************************"     
     - >
-      ansible-playbook -i tests/local.ini tests/test1.yml --sudo -vvvv
+      ansible-playbook -i tests/local.ini tests/test1.yml --sudo -vvvv | tee ansible_output  
       | grep -q 'changed=0.*failed=0'
       && (echo 'Idempotence test: pass' && exit 0)
-      || (echo 'Idempotence test: fail' && exit 1)
+      || (echo 'Idempotence test: fail' && cat ansible_output && exit 1)
     # 4th:  Application test (TODO)
     #- ./tests/test_logs.sh
