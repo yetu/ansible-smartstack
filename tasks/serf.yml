@@ -35,7 +35,7 @@
    owner="{{smartstack_user}}" 
    group="{{smartstack_user}}" 
    mode=0755 
-  notify: reload serf
+  notify: restart serf
 
 - name: serf | Deploy start script
   template:

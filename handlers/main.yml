@@ -16,5 +16,5 @@
 - name: reload serf
   service: 
     name=serf
-    state=reloaded
+    state=restarted
     enabled=true    
