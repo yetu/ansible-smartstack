@@ -13,7 +13,7 @@
     state=restarted
     enabled=true
 
-- name: reload serf
+- name: restart serf
   service: 
     name=serf
     state=restarted
