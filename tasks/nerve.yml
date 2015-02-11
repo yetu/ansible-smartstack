@@ -43,3 +43,9 @@
     src=nerve_init.sh.j2
     dest="/etc/init.d/nerve"
     mode=0755
+
+- name: nerve | Ensure nerve is running
+  service: 
+    name=nerve
+    state=started
+    enabled=true   

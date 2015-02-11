@@ -61,3 +61,10 @@
     src=synapse_init.sh.j2
     dest="/etc/init.d/synapse"
     mode=0755
+
+- name: synapse | Ensure synapse is running
+  service: 
+    name=synapse
+    state=started
+    enabled=true   
+

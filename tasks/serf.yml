@@ -28,7 +28,6 @@
 
 ##TODO Delete all installation
 
-
 - name: serf | Copy configuration file
   copy: 
    content='{{ serf_default_config | to_nice_json }}'
@@ -49,3 +48,9 @@
     src=serf_init.sh.j2
     dest="/etc/init.d/serf"
     mode=0755
+
+- name: serf | Ensure serf is running
+  service: 
+    name=serf
+    state=started
+    enabled=true   
