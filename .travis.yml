@@ -27,6 +27,6 @@ script:
       ansible-playbook -i tests/local.ini tests/test1.yml --sudo -vvvv | tee ansible_output  
       | grep -q 'changed=0.*failed=0'
       && (echo 'Idempotence test: pass' && exit 0)
-      || (echo 'Idempotence test: fail' && cat ansible_output && cat /var/log/syslog && exit 1)
+      || (echo 'Idempotence test: fail' && sudo cat ansible_output && cat /var/log/syslog && exit 1)
     # 4th:  Application test (TODO)
     #- ./tests/test_logs.sh
