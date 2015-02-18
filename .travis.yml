@@ -27,6 +27,11 @@ script:
       ansible-playbook -i tests/local.ini tests/test1.yml --sudo -vvvv | tee ansible_output  
       | grep -q 'changed=0.*failed=0'
       && (echo 'Idempotence test: pass' && exit 0)
-      || (echo 'Idempotence test: fail' && cat ansible_output && sudo cat /var/log/syslog && exit 1)
+      || (echo 'Idempotence test: fail' && exit 1)
     # 4th:  Application test (TODO)
-    #- ./tests/test_logs.sh
+
+after_failure:
+    - echo -e "\e[31m###### Syslog\e #######[0m" && sudo cat /var/log/syslog
+    - echo -e "\e[31m###### NerveLog\e #######[0m" && sudo cat /var/log/smartstack/nerve.log  
+    - echo -e "\e[31m###### SerfLog\e #######[0m" && sudo cat /var/log/smartstack/serf.log  
+    - echo -e "\e[31m###### SyanpaseLog\e #######[0m" && sudo cat /var/log/smartstack/synapse.log
