@@ -33,7 +33,7 @@ start() {
         #Start quite background uid and gid
 		start-stop-daemon --start --quiet --background --name $NAME --chdir $BASE_DIR --chuid $RUN_AS_USER --group $RUN_AS_GROUP --exec $ExecFile
 
-		[ "$?" -ne 0 ] && echo "[ FAILED ]" && return 1
+		[ "$?" -ne 0 ] && echo "[ FAILED ]" && exit 1
 		let kwait=$SLEEP_FOR
 		count=0;
 		until [ $count -gt $kwait ]
@@ -58,7 +58,7 @@ stop() {
 	if [ -n "$PID" ]; then
 	    echo -n  "Stoping $NAME "
 		kill -9 $PID
-		[ "$?" -ne 0 ] && echo "[ FAILED ]" && return 1
+		[ "$?" -ne 0 ] && echo "[ FAILED ]" && exit  1
 
 		let kwait=$SLEEP_FOR
 	    count=0;
@@ -71,10 +71,10 @@ stop() {
     	PID=$(JAVA_PID)
 		if [ -n "$PID" ]; then
 			echo "[ FAILED ]"
-			return 1
+			exit 1
 		else
 			echo "[ OK ]"
-			return 1
+			exit 0
 		fi
 	else
         echo "$NAME not running."
