@@ -41,3 +41,7 @@ after_failure:
     - sudo cat /var/log/smartstack/serf.log  
     - echo -e "\e[31m######SyanpaseLog#######\e[0m"
     - sudo cat /var/log/smartstack/synapse.log
+    - echo -e "\e[31m######SyanpaseLog#######\e[0m"    
+    - ifconfig
+    - cat /etc/serf/aaa_serf_config.json
+
