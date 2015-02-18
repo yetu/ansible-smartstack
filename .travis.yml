@@ -31,8 +31,13 @@ script:
     # 4th:  Application test (TODO)
 
 after_failure:
-    - echo -e "\e[31m###### Ansible idepotance log #######\e[0m" && sudo cat ansible_output
-    - echo -e "\e[31m###### Syslog #######\e[0m" && sudo cat /var/log/syslog
-    - echo -e "\e[31m###### NerveLog #######\e[0m" && sudo cat /var/log/smartstack/nerve.log  
-    - echo -e "\e[31m###### SerfLog #######\e[0m" && sudo cat /var/log/smartstack/serf.log  
-    - echo -e "\e[31m###### SyanpaseLog #######\e[0m" && sudo cat /var/log/smartstack/synapse.log
+    - echo -e "\e[31m######IdepotanceLog #######\e[0m" 
+    - sudo cat ansible_output
+    - echo -e "\e[31m######Syslog#######\e[0m"
+    - sudo cat /var/log/syslog
+    - echo -e "\e[31m######NerveLog#######\e[0m" 
+    - sudo cat /var/log/smartstack/nerve.log  
+    - echo -e "\e[31m######SerfLog#######\e[0m"
+    - sudo cat /var/log/smartstack/serf.log  
+    - echo -e "\e[31m######SyanpaseLog#######\e[0m"
+    - sudo cat /var/log/smartstack/synapse.log
