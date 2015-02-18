@@ -3,7 +3,7 @@ nerve_selected_services                 : [ "postgresql" ]
 synapse_install                         : True
 synapse_selected_services               : [ "postgresql" ]
 serf_masters                            : [ "127.0.0.1" ]
-serf_bind                               : "{{ansible_all_ipv4_addresses}}"
+serf_bind                               : "0.0.0.0"
 ip_match_enabled                        : True
 ip_fallback                             : True
 ip_match_rules                          :
