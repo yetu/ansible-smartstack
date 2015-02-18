@@ -41,7 +41,7 @@ after_failure:
     - sudo cat /var/log/smartstack/serf.log  
     - echo -e "\e[31m######SyanpaseLog#######\e[0m"
     - sudo cat /var/log/smartstack/synapse.log
-    - echo -e "\e[31m######SyanpaseLog#######\e[0m"    
-    - ifconfig
+    - echo -e "\e[31m######AnsibleFacts#######\e[0m"    
+    - ansible -i 127.0.0.1, -m setup all -c local
     - cat /etc/serf/aaa_serf_config.json
 
