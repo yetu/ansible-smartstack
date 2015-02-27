@@ -32,38 +32,38 @@ This role is tested with ubuntu 12.04 and ansible 1.7
 
 ## Role Variables
 Please check following files for variables
-	
+
 	default/main.yml
 	vars/services.yml
 
 
 ## Usage
 Installation of synapse and nerve are have to be explicitly stated in your playbook.
-
+```yaml	
 	nerve_install           : True
-
+```
 If you would like to install synapse
-
+```yaml	
 	synapse_install         : True
-
+```
 
 You also have to give the list of services that you want to make available, for instance if you would like to announce the postgres service
-
+```yaml	
 	nerve_selected_services       : [ "postgresql" ]
-	
+```	
 	
 You also have to give the list of services that you want to connect to / use, for instance if you would like to connect to a memcache service running on another server:
-
+```yaml	
 	synapse_selected_services       : [ "memcache" ]
-
+```
 You also need to define the services that you need, an example how services can be defined can be found at 
 
 	vars/services.yml
 
 Once you define your services you can give the path of your service file as a variable to the this role:
-
+```yaml	
 	smartstack_services_files  : "my-services.yml"
-
+```
 
 ## Example Playbook
 
