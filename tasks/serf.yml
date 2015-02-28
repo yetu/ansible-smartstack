@@ -51,7 +51,7 @@
 
 - name: serf | Configure serf log rotation
   template:
-    src=serf_log_rotation.j2
+    src=serf/serf_log_rotation.j2
     dest=/etc/logrotate.d/serf
 
 - name: serf | Ensure serf is running
