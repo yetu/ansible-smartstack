@@ -1,0 +1,7 @@
+{{ serf_log_file }} {
+  rotate {{ serf_log_rotate_count }}
+  {{ serf_log_rotate_interval }}
+  compress
+  missingok
+  notifempty
+}

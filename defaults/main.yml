@@ -88,6 +88,8 @@ serf_host                           : "localhost"
 serf_port                           : 7373
 serf_version                        : 0.6.3
 serf_log_file                       : "{{smartstack_base_log_dir}}/serf.log"
+serf_log_rotate_count               : 5 # number to rotate per interval 
+serf_log_rotate_interval            : "daily"
 serf_masters                        : [ ]
 serf_bind                           : "{{ansible_eth0.ipv4.address}}" ## Should we use smart IP match ?
 serf_encrypt_key                    : "my2QGv0gmoFQxh5suQaTSg=="
