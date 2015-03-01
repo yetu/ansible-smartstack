@@ -40,7 +40,7 @@
 
 - name: nerve | Configure nerve log rotation
   template:
-    src=nerve/nerve/nerve_log_rotation.j2
+    src=nerve/nerve_log_rotation.j2
     dest=/etc/logrotate.d/nerve
 
 - name: nerve | Deploy init.d script
