@@ -25,7 +25,7 @@
 
 - name: nerve | Deploy configuration file
   template:
-    src=nerve_config.json.j2
+    src=nerve/nerve_config.json.j2
     dest="{{nerve_home}}/config.json"
     mode=0640
     owner="{{smartstack_user}}" 
@@ -34,13 +34,18 @@
 
 - name: nerve | Deploy start script
   template:
-    src=nerve_start.sh.j2
+    src=nerve/nerve_start.sh.j2
     dest="{{nerve_home}}/nerve_start.sh"
     mode=0755
 
+- name: nerve | Configure nerve log rotation
+  template:
+    src=nerve/nerve/nerve_log_rotation.j2
+    dest=/etc/logrotate.d/nerve
+
 - name: nerve | Deploy init.d script
   template:
-    src=nerve_init.sh.j2
+    src=nerve/nerve_init.sh.j2
     dest="/etc/init.d/nerve"
     mode=0755
 

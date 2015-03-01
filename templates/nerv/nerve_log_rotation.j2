@@ -1,0 +1,7 @@
+{{ nerv_log_file }} {
+  rotate {{ nerv_log_rotate_count }}
+  {{ nerv_log_rotate_interval }}
+  compress
+  missingok
+  notifempty
+}

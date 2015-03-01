@@ -18,6 +18,8 @@ smartstack_tag                      : ""
 nerve_install                       : False                             
 nerve_home                          : "{{smartstack_home}}/nerve"
 nerve_log_file                      : "{{smartstack_base_log_dir}}/nerve.log"
+nerve_log_rotate_count              : 5 # number to rotate per interval
+nerve_log_rotate_interval           : "daily"
 nerve_install_dir                   : "{{nerve_home}}/src"
 nerve_config_file                   : "{{nerve_home}}/config.json"
 nerve_repository                    : 'https://github.com/getyourguide/nerve.git'
