@@ -1,4 +1,5 @@
-# ansible-smartstack [![Build Status](https://api.travis-ci.org/yetu/ansible-smartstack.svg?branch=master)](https://travis-ci.org/yetu/ansible-smartstack/)
+# ansible-smartstack
+[![Build Status](https://api.travis-ci.org/yetu/ansible-smartstack.svg?branch=master)](https://travis-ci.org/yetu/ansible-smartstack/)
 
 SmartStack is an automated service discovery and registration framework. 
 This ansible role installs airbnb smartstack, which includes following components
