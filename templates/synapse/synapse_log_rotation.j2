@@ -1,0 +1,7 @@
+{{ synapse_log_file }} {
+  rotate {{ synapse_log_rotate_count }}
+  {{ synapse_log_rotate_interval }}
+  compress
+  missingok
+  notifempty
+}

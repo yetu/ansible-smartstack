@@ -33,6 +33,8 @@ nerve_selected_services             :  []
 synapse_install                     : False
 synapse_home                        : "{{smartstack_home}}/synapse"
 synapse_log_file                    : "{{smartstack_base_log_dir}}/synapse.log"
+synapse_log_rotate_count            : 5 # number to rotate per interval
+synapse_log_rotate_interval         : "daily"
 synapse_install_dir                 : "{{synapse_home}}/src"
 synapse_config_file                 : "{{synapse_home}}/config.json"
 synapse_repository                  : 'https://github.com/getyourguide/synapse.git'

@@ -62,6 +62,11 @@
     dest="/etc/init.d/synapse"
     mode=0755
 
+- name: synapse | Configure synapse log rotation
+  template:
+    src=synapse/synapse_log_rotation.j2
+    dest=/etc/logrotate.d/synapse
+
 - name: synapse | Ensure synapse is running
   service: 
     name=synapse
