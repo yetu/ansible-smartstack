@@ -39,13 +39,13 @@
 
 - name: serf | Deploy start script
   template:
-    src=serf_start.sh.j2
+    src=serf/serf_start.sh.j2
     dest="{{serf_home}}/serf_start.sh"
     mode=0755
 
 - name: serf | Deploy init.d script
   template:
-    src=serf_init.sh.j2
+    src=serf/serf_init.sh.j2
     dest="/etc/init.d/serf"
     mode=0755
 
