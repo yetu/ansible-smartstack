@@ -91,7 +91,8 @@ From demo1 or demo2 type  ```serf members```
 http://192.168.56.151:3212/
 
 ### Simulate failure serf failure
-```sudo service serf stop``` then ```serf members```
+On demo1 type ```sudo service serf stop``` then on demo2 ```serf members```
+enable back serf on demo1 by typing ```sudo service serf stop```
 
 ### Simulate postgresql faliure 
 on demo2  ```sudo service postgresql stop``` then head to http://192.168.56.151:3212/
