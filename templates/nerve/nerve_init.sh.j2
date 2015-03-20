@@ -45,7 +45,6 @@ start() {
 		PID=$(JAVA_PID)
 		if [ -n "$PID" ]; then
 			echo "[ OK ]"
-			exit 0
 		else
 			echo "[ FAILED ]"
 			exit 1
@@ -74,7 +73,6 @@ stop() {
 			exit 1
 		else
 			echo "[ OK ]"
-			exit 0
 		fi
 	else
         echo "$NAME not running."
