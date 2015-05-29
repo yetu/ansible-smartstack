@@ -40,6 +40,7 @@
 #Maybe include in common only rather in synapse and nerve
 - name: synapse | Include services variable file
   include_vars: "{{smartstack_services_files}}"
+  when: smartstack_services_files is not false
 
 - name: synapse | Deploy configuration file
   template:
