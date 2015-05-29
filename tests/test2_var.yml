@@ -11,11 +11,8 @@ ip_match_rules                          :
                                             - regx      : "192.168.*"
                                               reg_match : true
 
-packages_to_install                     : 
-                                           - "postgresql"
-ruby_install                            : True
 
-services_ports                    :
+services_ports                    : 
                                       synapse        : 3210
                                       nerve          : 3211
                                       haproxy        : 3212
@@ -24,10 +21,35 @@ services_ports                    :
                                       memcache       : 3403
                                       postgresql     : 5432
 
+services_ports_test                :
+                                      synapse   : 10000
+                                      nerve     : 9999
+
 services   :
-   memcache:
-        synapse :
-              discovery          :
+   superservice: 
+        synapse : 
+              discovery          : 
+                method           : "serf"
+              haproxy            :
+                server_options   : "check inter 10s fastinter 5s downinter 8s rise 3 fall 2"
+                listen           :
+                                   - "mode tcp"
+                                   - "timeout  connect 10s"
+                                   - "timeout  client  1h"
+                                   - "timeout  server  1h"
+                port              : "{{ services_ports_test['synapse'] }}"
+        nerve:
+              port               : "{{ services_ports['nerve'] }}"
+              reporter_type      : "serf"
+              check_interval     : 3
+              checks:
+                 - type     : "tcp"
+                   timeout  : 5
+                   rise     : 2
+                   fall     : 2     
+   memcache: 
+        synapse : 
+              discovery          : 
                 method    : "serf"
               haproxy            :
                 server_options   : "check inter 1s rise 1 fall 1"
@@ -43,9 +65,9 @@ services   :
                    timeout  : 1
                    rise     : 2
                    fall     : 3
-   postgresql:
-        synapse :
-              discovery          :
+   postgresql: 
+        synapse : 
+              discovery          : 
                 method    : "serf"
               haproxy            :
                 server_options   : "check inter 10s fastinter 5s downinter 8s rise 3 fall 2"
@@ -63,10 +85,10 @@ services   :
                  - type     : "tcp"
                    timeout  : 5
                    rise     : 2
-                   fall     : 2
-   sqlslave:
-        synapse :
-              discovery          :
+                   fall     : 2                   
+   sqlslave: 
+        synapse : 
+              discovery          : 
                 method    : "serf"
               haproxy            :
                 server_options   : "check inter 10s fastinter 5s downinter 8s rise 3 fall 2"

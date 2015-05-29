@@ -10,21 +10,12 @@
     - "test2_var.yml"
   
   pre_tasks:
-
-    - name : postgresql
-      lineinfile: 
-        dest=/etc/postgresql/9.1/main/postgresql.conf
-        regexp='^listen_addresses' 
-        line="listen_addresses = '*'"
-      register: postgresql_conf
-      when: "'postgresql' in packages_to_install"
-
-    - name : postgresql
-      service: 
-        name=postgresql
-        state=restarted
-      register: postgresql_conf
-      when: "'postgresql' in packages_to_install and postgresql_conf | changed"
+  
+    - name: superservice 
+      template:
+        src="./superservice.j2"
+        dest="/etc/init.d/superservice"
+        mode="0755"
 
   roles :
     - ansible-smartstack
