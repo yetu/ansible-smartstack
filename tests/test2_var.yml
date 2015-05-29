@@ -1,3 +1,4 @@
+---
 nerve_install                           : True
 nerve_selected_services                 : [ "postgresql" ]
 synapse_install                         : True

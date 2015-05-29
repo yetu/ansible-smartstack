@@ -23,7 +23,7 @@
   git:
       repo="{{synapse_repository}}"
       dest="{{synapse_install_dir}}"
-      force=no
+      force="yes"
       version="{{synapse_reference}}"
       accept_hostkey=true
   sudo_user: "{{smartstack_user}}"

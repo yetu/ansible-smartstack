@@ -9,7 +9,32 @@ services_ports                    :
                                       memcache       : 3403
                                       postgresql     : 5432
 
+services_ports_test                :
+                                      synapse   : 10000
+                                      nerve     : 9999
+
 services   :
+   superservice: 
+        synapse : 
+              discovery          : 
+                method           : "serf"
+              haproxy            :
+                server_options   : "check inter 10s fastinter 5s downinter 8s rise 3 fall 2"
+                listen           :
+                                   - "mode tcp"
+                                   - "timeout  connect 10s"
+                                   - "timeout  client  1h"
+                                   - "timeout  server  1h"
+                port              : "{{ services_ports_test['synapse'] }}"
+        nerve:
+              port               : "{{ services_ports['nerve'] }}"
+              reporter_type      : "serf"
+              check_interval     : 3
+              checks:
+                 - type     : "tcp"
+                   timeout  : 5
+                   rise     : 2
+                   fall     : 2     
    memcache: 
         synapse : 
               discovery          : 
