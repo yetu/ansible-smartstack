@@ -1,2 +1,4 @@
 demo/.vagrant
 .idea
+.kitchen/
+tests/ansible_output
