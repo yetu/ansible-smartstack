@@ -5,13 +5,13 @@
   git:
       repo="{{nerve_repository}}"
       dest="{{nerve_install_dir}}"
-      force="yes"
+      force="no"
       version="{{nerve_reference}}"
       accept_hostkey=true
   sudo_user: "{{smartstack_user}}"
 
 - name: nerve | Install nerve
-  shell: bundle install --without development 
+  shell: bundle install --without development --frozen
   args:
     chdir: "{{ nerve_install_dir }}"
   environment: smartstack_env_variable

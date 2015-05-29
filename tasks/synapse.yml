@@ -23,13 +23,13 @@
   git:
       repo="{{synapse_repository}}"
       dest="{{synapse_install_dir}}"
-      force="yes"
+      force="no"
       version="{{synapse_reference}}"
       accept_hostkey=true
   sudo_user: "{{smartstack_user}}"
 
 - name: synapse | Install synapse
-  shell: bundle install --without development 
+  shell: bundle install --without development --frozen
   args:
     chdir: "{{synapse_install_dir}}"
   environment: smartstack_env_variable
