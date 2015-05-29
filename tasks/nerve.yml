@@ -22,7 +22,7 @@
   #Maybe include in common only rather in synapse and nerve
 - name: nerve | Include services variable file
   include_vars: "{{smartstack_services_files}}"
-  when: smartstack_services_files
+  when: smartstack_services_files is defined
 
 - name: nerve | Deploy configuration file
   template:

@@ -5,7 +5,7 @@ smartstack_user                     : "smartstack"
 smartstack_home                     : "/opt/smartstack"
 smartstack_env_variable             :
                                       GEM_HOME: "{{smartstack_home}}/.gem"
-smartstack_services_files           : False # set a filename here to include extra vars for nerve/synapse
+#smartstack_services_files           : "service.yml" # set a filename here to include extra vars for nerve/synapse
 smartstack_base_log_dir             : "/var/log/smartstack"
 
 #If you are using different stages such as dev,prod
