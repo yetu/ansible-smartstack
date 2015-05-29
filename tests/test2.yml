@@ -1,0 +1,30 @@
+---
+#
+# This playbook deploys your keys to the vagrant
+#
+
+- name: Provision my keys
+  hosts: all
+  sudo: True
+  vars_files:
+    - "test2_var.yml"
+  
+  pre_tasks:
+
+    - name : postgresql
+      lineinfile: 
+        dest=/etc/postgresql/9.1/main/postgresql.conf
+        regexp='^listen_addresses' 
+        line="listen_addresses = '*'"
+      register: postgresql_conf
+      when: "'postgresql' in packages_to_install"
+
+    - name : postgresql
+      service: 
+        name=postgresql
+        state=restarted
+      register: postgresql_conf
+      when: "'postgresql' in packages_to_install and postgresql_conf | changed"
+
+  roles :
+    - ansible-smartstack
