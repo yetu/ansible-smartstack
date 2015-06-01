@@ -1,4 +1,16 @@
 ---
+nerve_install                           : True
+nerve_selected_services                 : [ "postgresql" ]
+synapse_install                         : True
+synapse_selected_services               : [ "postgresql" ]
+serf_masters                            : [ "127.0.0.1" ]
+serf_bind                               : "0.0.0.0"
+ip_match_enabled                        : True
+ip_fallback                             : True
+ip_match_rules                          :
+                                            - regx      : "192.168.*"
+                                              reg_match : true
+
 
 services_ports                    : 
                                       synapse        : 3210

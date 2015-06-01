@@ -5,42 +5,55 @@ python: "2.7"
 before_install:
   # Make sure everything's up to date.
   - sudo apt-get update -qq
+  - sudo apt-get install -qq python-apt python-pycurl git python-pip
 
 install:
   # Install Ansible.
   - pip install ansible
 
-  # Add ansible.cfg to pick up roles path. and inventory file
-  - echo -e '[defaults]\nroles_path = ../' > ansible.cfg
-  - echo 'localhost  ansible_connection=local' > tests/local.ini
-
 script:
+    - cd tests
     # 1st: check syntax
-    - echo "***************************** SYNTAX CHECK (1) *****************************"
-    - ansible-playbook -i tests/local.ini tests/test1.yml --syntax-check
+    - echo "***************************** SYNTAX CHECK test 1 (1) *****************************"
+    - ansible-playbook -i local.ini test1.yml --syntax-check
     # 2nd:  Make sure we run the entire playbook
-    - echo "***************************** RUN PLAY (2) *****************************"    
-    - ansible-playbook -i tests/local.ini tests/test1.yml --sudo -vvvv
+    - echo "***************************** RUN PLAY test 1 (2) *****************************"    
+    - ansible-playbook -i local.ini test1.yml --sudo -vvvv
     # 3rd:  Make sure our playbook is idempotent 
-    - echo "***************************** Idempotence test (3) *****************************"     
+    - echo "***************************** Idempotence test test 1 (3) *****************************"     
     - >
-      ansible-playbook -i tests/local.ini tests/test1.yml --sudo -vvvv | tee ansible_output  
+      ansible-playbook -i local.ini test1.yml --sudo -vvvv | tee ansible_output  
       | grep -q 'changed=0.*failed=0'
       && (echo 'Idempotence test: pass' && exit 0)
       || (echo 'Idempotence test: fail' && exit 1)
-    # 4th:  Application test (TODO)
+
+
+    # 1st: check syntax
+    - echo "***************************** SYNTAX CHECK test 2 (1) *****************************"
+    - ansible-playbook -i local.ini test2.yml --syntax-check
+    # 2nd:  Make sure we run the entire playbook
+    - echo "***************************** RUN PLAY test 2 (2) *****************************"
+    - ansible-playbook -i local.ini test2.yml --sudo -vvvv
+    # 3rd:  Make sure our playbook is idempotent
+    - echo "***************************** Idempotence test test 2 (3) *****************************"
+    - >
+      ansible-playbook -i local.ini test2.yml --sudo -vvvv | tee ansible_output
+      | grep -q 'changed=0.*failed=0'
+      && (echo 'Idempotence test: pass' && exit 0)
+      || (echo 'Idempotence test: fail' && exit 1)
+
 
 after_failure:
-    - echo -e "\e[31m######IdepotanceLog #######\e[0m" 
+    - echo -e "######IdepotanceLog #######" 
     - sudo cat ansible_output
-    - echo -e "\e[31m######Syslog#######\e[0m"
+    - echo -e "######Syslog#######"
     - sudo cat /var/log/syslog
-    - echo -e "\e[31m######NerveLog#######\e[0m" 
+    - echo -e "######NerveLog#######" 
     - sudo cat /var/log/smartstack/nerve.log  
-    - echo -e "\e[31m######SerfLog#######\e[0m"
+    - echo -e "######SerfLog#######"
     - sudo cat /var/log/smartstack/serf.log  
-    - echo -e "\e[31m######SyanpaseLog#######\e[0m"
+    - echo -e "######SyanpaseLog#######"
     - sudo cat /var/log/smartstack/synapse.log
-    - echo -e "\e[31m######AnsibleFacts#######\e[0m"    
+    - echo -e "######AnsibleFacts#######"    
     - ansible -i 127.0.0.1, -m setup all -c local
 

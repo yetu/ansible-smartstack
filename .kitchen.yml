@@ -1,0 +1,17 @@
+---
+driver:
+  name: vagrant
+
+provisioner:
+  name: shell
+  script: tests/run_vagrant_kitchen.sh
+
+platforms:
+    - name: ubuntu-14.04
+      driver:
+        box: ubuntu/trusty64
+        synced_folders:
+         - [ "<%= Dir.pwd %>", "<%= '/mnt/shared/' + File.basename(Dir.pwd) %>/"]
+
+suites:
+  - name: default

@@ -5,15 +5,15 @@
   git:
       repo="{{nerve_repository}}"
       dest="{{nerve_install_dir}}"
-      force=no
+      force="no"
       version="{{nerve_reference}}"
       accept_hostkey=true
   sudo_user: "{{smartstack_user}}"
 
 - name: nerve | Install nerve
-  shell: bundle install --without development 
+  shell: bundle install --without development --frozen
   args:
-    chdir: "{{nerve_install_dir}}"
+    chdir: "{{ nerve_install_dir }}"
   environment: smartstack_env_variable
   register: nerve_bundle_install
   changed_when: nerve_bundle_install.stdout.find('Installing') != -1
@@ -22,6 +22,7 @@
   #Maybe include in common only rather in synapse and nerve
 - name: nerve | Include services variable file
   include_vars: "{{smartstack_services_files}}"
+  when: smartstack_services_files is defined
 
 - name: nerve | Deploy configuration file
   template:
