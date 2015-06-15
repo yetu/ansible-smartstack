@@ -8,6 +8,7 @@
       force="no"
       version="{{nerve_reference}}"
       accept_hostkey=true
+  when: not smartstack_omnibis_install 
   sudo_user: "{{smartstack_user}}"
 
 - name: nerve | Install nerve
@@ -17,6 +18,7 @@
   environment: smartstack_env_variable
   register: nerve_bundle_install
   changed_when: nerve_bundle_install.stdout.find('Installing') != -1
+  when: not smartstack_omnibis_install 
   sudo_user: "{{smartstack_user}}"
 
   #Maybe include in common only rather in synapse and nerve
@@ -29,7 +31,7 @@
     src=nerve/nerve_config.json.j2
     dest="{{nerve_home}}/config.json"
     mode=0640
-    owner="{{smartstack_user}}" 
+    owner="{{smartstack_user}}"
     group="{{smartstack_user}}"
   notify: restart nerve
 
@@ -54,4 +56,4 @@
   service: 
     name=nerve
     state=started
-    enabled=true   
+    enabled=true

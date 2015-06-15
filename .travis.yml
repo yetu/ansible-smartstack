@@ -3,12 +3,12 @@ language: python
 python: "2.7"
 
 before_install:
-  # Make sure everything's up to date.
+   # Make sure everything's up to date.
   - sudo apt-get update -qq
   - sudo apt-get install -qq python-apt python-pycurl git python-pip
 
 install:
-  # Install Ansible.
+   # Install Ansible.
   - pip install ansible
 
 script:
@@ -27,7 +27,6 @@ script:
       && (echo 'Idempotence test: pass' && exit 0)
       || (echo 'Idempotence test: fail' && exit 1)
 
-
     # 1st: check syntax
     - echo "***************************** SYNTAX CHECK test 2 (1) *****************************"
     - ansible-playbook -i local.ini test2.yml --syntax-check
@@ -42,18 +41,30 @@ script:
       && (echo 'Idempotence test: pass' && exit 0)
       || (echo 'Idempotence test: fail' && exit 1)
 
+    # 1st: check syntax
+    - echo "***************************** SYNTAX CHECK test 3 (1) *****************************"
+    - ansible-playbook -i local.ini test3.yml --syntax-check
+    # 2nd:  Make sure we run the entire playbook
+    - echo "***************************** RUN PLAY test 3 (2) *****************************"
+    - ansible-playbook -i local.ini test3.yml --sudo -vvvv
+    # 3rd:  Make sure our playbook is idempotent
+    - echo "***************************** Idempotence test test 3 (3) *****************************"
+    - >
+      ansible-playbook -i local.ini test3.yml --sudo -vvvv | tee ansible_output
+      | grep -q 'changed=0.*failed=0'
+      && (echo 'Idempotence test: pass' && exit 0)
+      || (echo 'Idempotence test: fail' && exit 1)
 
 after_failure:
-    - echo -e "######IdepotanceLog #######" 
+    - echo "******IdepotanceLog *******" 
     - sudo cat ansible_output
-    - echo -e "######Syslog#######"
+    - echo "******Syslog*******"
     - sudo cat /var/log/syslog
-    - echo -e "######NerveLog#######" 
+    - echo "******NerveLog*******" 
     - sudo cat /var/log/smartstack/nerve.log  
-    - echo -e "######SerfLog#######"
+    - echo "******SerfLog*******"
     - sudo cat /var/log/smartstack/serf.log  
-    - echo -e "######SyanpaseLog#######"
+    - echo "******SyanpaseLog*******"
     - sudo cat /var/log/smartstack/synapse.log
-    - echo -e "######AnsibleFacts#######"    
+    - echo "******AnsibleFacts*******"    
     - ansible -i 127.0.0.1, -m setup all -c local
-

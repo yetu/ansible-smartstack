@@ -1,0 +1,26 @@
+---
+
+- name: Provision my keys
+  hosts: all
+  sudo: True
+  vars_files:
+    - "test3_var.yml"
+
+  pre_tasks:
+
+    - name: Check if omibus was installed before
+      stat: 
+        path=/opt/smartstack/bin/
+      register: p
+
+    - name: Stop Nerve and synapse
+      service:
+        name="{{ item }}"
+        state="stopped"
+      with_items:
+        - "synapse"
+        - "nerve"
+      when: p.stat.exists is defined and not p.stat.exists
+
+  roles :
+    - ansible-smartstack

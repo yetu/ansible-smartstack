@@ -26,6 +26,7 @@
       force="no"
       version="{{synapse_reference}}"
       accept_hostkey=true
+  when: not smartstack_omnibis_install 
   sudo_user: "{{smartstack_user}}"
 
 - name: synapse | Install synapse
@@ -34,10 +35,11 @@
     chdir: "{{synapse_install_dir}}"
   environment: smartstack_env_variable
   register: synapse_bundle_install
-  changed_when: synapse_bundle_install.stdout.find('Installing') != -1  
+  changed_when: synapse_bundle_install.stdout.find('Installing') != -1
+  when: not smartstack_omnibis_install
   sudo_user: "{{smartstack_user}}"
 
-#Maybe include in common only rather in synapse and nerve
+  #Maybe include in common only rather in synapse and nerve
 - name: synapse | Include services variable file
   include_vars: "{{smartstack_services_files}}"
   when: smartstack_services_files is defined
@@ -47,7 +49,7 @@
     src=synapse/synapse_config.json.j2
     dest="{{synapse_home}}/config.json"
     mode=0640
-    owner="{{smartstack_user}}" 
+    owner="{{smartstack_user}}"
     group="{{smartstack_user}}"
   notify: restart synapse
 
@@ -72,5 +74,5 @@
   service: 
     name=synapse
     state=started
-    enabled=true   
+    enabled=true
 

@@ -8,9 +8,9 @@
   sudo: True
   vars_files:
     - "test2_var.yml"
-  
+
   pre_tasks:
-  
+
     - name: superservice 
       template:
         src="./superservice.j2"

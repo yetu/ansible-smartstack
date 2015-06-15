@@ -14,7 +14,7 @@
   set_fact: 
     service_ip="{{server_ips[0]}}"
   when: service_ip is not defined or service_ip == "" and ip_fallback
-  
+
 - name: ip_match | Extract IP (3) Failed
   fail: msg="Could not set IP in {{server_ips}} that match rules. Please check your rules."
   when: service_ip is not defined or service_ip == ""
