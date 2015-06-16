@@ -26,7 +26,7 @@
       force="no"
       version="{{synapse_reference}}"
       accept_hostkey=true
-  when: not smartstack_omnibis_install 
+  when: not smartstack_omnibus_install 
   sudo_user: "{{smartstack_user}}"
 
 - name: synapse | Install synapse
@@ -36,7 +36,7 @@
   environment: smartstack_env_variable
   register: synapse_bundle_install
   changed_when: synapse_bundle_install.stdout.find('Installing') != -1
-  when: not smartstack_omnibis_install
+  when: not smartstack_omnibus_install
   sudo_user: "{{smartstack_user}}"
 
   #Maybe include in common only rather in synapse and nerve

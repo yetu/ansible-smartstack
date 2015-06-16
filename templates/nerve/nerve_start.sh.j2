@@ -1,5 +1,5 @@
 #!/bin/bash
-{% if smartstack_omnibis_install %}
+{% if smartstack_omnibus_install %}
 /opt/smartstack/bin/nerve --config {{nerve_home}}/config.json >> {{nerve_log_file}} 2>&1
 {% else %}
 cd {{ nerve_install_dir }}

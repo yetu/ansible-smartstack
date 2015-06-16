@@ -15,7 +15,7 @@
   tags: [ nerve, synapse, serf ]
 
 - include : omnibus.yml
-  when: smartstack_omnibis_install
+  when: smartstack_omnibus_install
   tags: [ nerve, synapse ]
 
 - include : nerve.yml

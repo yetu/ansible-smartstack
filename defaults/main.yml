@@ -9,10 +9,10 @@ smartstack_env_variable             :
 smartstack_base_log_dir             : "/var/log/smartstack"
 
 # Omnibus Options
-smartstack_omnibis_install          : False
-smartstack_omnibis_url              : "https://github.com/yetu/omnibus-smartstack/releases/download/0.0.1/smartstack_0.0.1-1_amd64.deb"
-smartstack_omnibis_sha256           : "548fbc3a92ec951bc8b1c3b086f1a1731cd859b727fd5897b6d92013255721ea"
-smartstack_omnibis_src              : "/opt/smartstack/src"
+smartstack_omnibus_install          : False
+smartstack_omnibus_url              : "https://github.com/yetu/omnibus-smartstack/releases/download/0.0.1/smartstack_0.0.1-1_amd64.deb"
+smartstack_omnibus_sha256           : "548fbc3a92ec951bc8b1c3b086f1a1731cd859b727fd5897b6d92013255721ea"
+smartstack_omnibus_src              : "/opt/smartstack/src"
 
 #If you are using different stages such as dev,prod
 # you should set this tag
