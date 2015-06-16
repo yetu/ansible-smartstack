@@ -1,14 +1,22 @@
 ---
 # tasks file for ansible-smartstack
 
-- name: nerve | Get nerve from git
+- name: nerv | Create synapse directories
+  file: 
+   path="{{ nerve_home }}"
+   owner="{{ smartstack_user }}"
+   group="{{ smartstack_user }}"
+   mode=0755
+   state=directory
+
+- name: nerve | Get nerve from gi
   git:
       repo="{{nerve_repository}}"
       dest="{{nerve_install_dir}}"
       force="no"
       version="{{nerve_reference}}"
       accept_hostkey=true
-  when: not smartstack_omnibis_install 
+  when: not smartstack_omnibus_install 
   sudo_user: "{{smartstack_user}}"
 
 - name: nerve | Install nerve
@@ -18,7 +26,7 @@
   environment: smartstack_env_variable
   register: nerve_bundle_install
   changed_when: nerve_bundle_install.stdout.find('Installing') != -1
-  when: not smartstack_omnibis_install 
+  when: not smartstack_omnibus_install 
   sudo_user: "{{smartstack_user}}"
 
   #Maybe include in common only rather in synapse and nerve

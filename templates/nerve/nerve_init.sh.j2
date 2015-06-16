@@ -5,11 +5,11 @@ DESC="nerve-service"
 
 RUN_AS_USER="{{smartstack_user}}"
 RUN_AS_GROUP="{{smartstack_user}}"
-BASE_DIR="{{nerve_install_dir}}"
+BASE_DIR="{{ nerve_home }}"
 
 GREP_NAME="bin/nerve"
 
-ExecFile="{{nerve_home}}/nerve_start.sh"
+ExecFile="{{ nerve_home }}/nerve_start.sh"
 
 
 STOPCMD="kill -9"
