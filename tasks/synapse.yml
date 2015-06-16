@@ -5,9 +5,9 @@
 
 - name: synapse | Create synapse directories
   file: 
-   path="{{synapse_home}}"
-   owner="{{smartstack_user}}"
-   group="{{smartstack_user}}"
+   path="{{ synapse_home }}"
+   owner="{{ smartstack_user }}"
+   group="{{ smartstack_user }}"
    mode=0755
    state=directory
 

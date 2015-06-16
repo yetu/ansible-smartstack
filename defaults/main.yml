@@ -144,5 +144,6 @@ ip_fallback      : False  # if my match rules dont work just match the first IP
 ruby_install                : False
 ruby_version                : 2.1
 
-
+# TODO: Remove me Left for backward compatibility 
+smartstack_git_install      : False
 

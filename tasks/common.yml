@@ -6,11 +6,11 @@
     home="{{smartstack_home}}"
     createhome="yes"
 
+  # TODO: Remove me Left for backward compatibility 
 - name: common | Install git 
   apt:
-     name="{{item}}"
-  with_items:
-   - git
+     name="git"
+  when: smartstack_git_install
 
 - name: common | Create base log directory
   file: 
