@@ -1,7 +1,4 @@
 ---
-#
-# This playbook deploys your keys to the vagrant
-#
 
 - name: Provision my keys
   hosts: all
@@ -11,11 +8,24 @@
 
   pre_tasks:
 
+    - name: Check if omibus was installed before
+      stat: 
+        path=/opt/smartstack/bin/
+      register: p
+
+    - name: Stop Nerve and synapse
+      service:
+        name="{{ item }}"
+        state="stopped"
+      with_items:
+        - "synapse"
+        - "nerve"
+      when: p.stat.exists is defined and not p.stat.exists
+
     - name: superservice 
       template:
         src="./superservice.j2"
         dest="/etc/init.d/superservice"
         mode="0755"
-
   roles :
     - ansible-smartstack
