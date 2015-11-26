@@ -2,6 +2,7 @@
 nerve_install                           : True
 synapse_install                         : False    
 nerve_selected_services                 : [ "postgresql" ]
+
 serf_masters                            : [ "192.168.56.150", "192.168.56.151"]
 serf_bind                               : "{{service_ip}}"
 ip_match_enabled                        : True
@@ -16,3 +17,6 @@ packages_to_install                     :
                                            - "postgresql"
 ###
 ruby_install                            : True
+
+## App config
+color                                   : "#D80000"

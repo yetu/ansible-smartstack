@@ -11,13 +11,22 @@
 ## If you dont want the run to fail if file does not exisit 
 #    - [ "{{inventory_hostname}}-var.yml", "defaults-var.yml" ]
   vars:
-    localuser: "{{ lookup('ENV','USER') }}"
+    superapp_user     : "{{ lookup('ENV','USER') }}"
+    superapp_pwd      : "/home/{{superapp_user}}"
+    superapp_bin      : "/usr/bin/python"
+    superapp_opts     : "-m SimpleHTTPServer"
+    localuser         : "{{ lookup('ENV','USER') }}"
 
   pre_tasks:
+
+    - name: Install git
+      apt:
+        name="git"
+
     - name: Create your local user
       user:
         name="{{localuser}}"
-        home="/home/{{localuser}}"
+        home="{{superapp_pwd}}"
         shell="/bin/bash"
         append="true"
         group="admin"
@@ -34,16 +43,32 @@
       apt:
         update_cache=yes
 
+    - name: Install superapp
+      template:
+        src="index.html.j2"
+        dest="{{superapp_pwd}}/index.html"
+
+    - name: Install superapp service
+      template:
+        src="superapp.sh.j2"
+        dest="/etc/init.d/superapp"
+        mode=0755
+
+    - name: Enable superapp service
+      service: 
+        name=superapp
+        state=restarted
+
     - name: Install demo packages
       apt:
-        name="{{item}}"  
+        name="{{item}}"
       with_items: packages_to_install
       when : packages_to_install is defined
 
     - name : postgresql
       lineinfile: 
         dest=/etc/postgresql/9.1/main/postgresql.conf
-        regexp='^listen_addresses' 
+        regexp='^listen_addresses'
         line="listen_addresses = '*'"
       register: postgresql_conf
       when: "'postgresql' in packages_to_install"

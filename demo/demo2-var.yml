@@ -2,8 +2,9 @@
 nerve_install                           : False
 synapse_install                         : True    
 synapse_selected_services               : [ "postgresql" ]
-serf_bind                               : "{{service_ip}}"
+
 serf_masters                            : [ "192.168.56.150", "192.168.56.151"]
+serf_bind                               : "{{service_ip}}"
 ip_match_enabled                        : True
 ip_match_rules                          :  
                                             - regx      : "192.168.56.*"
@@ -13,6 +14,9 @@ smartstack_services_files               : "services.yml"
 #####
 #Since this is a demo we will make a list of packages to install
 packages_to_install                     : 
-                                           - "postgresql-client"
+                                          - "postgresql-client"
 ###
 ruby_install                            : True
+
+##
+color                                   : "#3300CC"
