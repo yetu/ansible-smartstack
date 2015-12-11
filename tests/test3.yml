@@ -1,4 +1,7 @@
 ---
+#
+# This playbook deploys your keys to the vagrant
+#
 
 - name: Provision my keys
   hosts: all
@@ -7,7 +10,6 @@
     - "test2_var.yml"
 
   pre_tasks:
-
     - name: Check if omibus was installed before
       stat: 
         path=/opt/smartstack/bin/
@@ -27,5 +29,6 @@
         src="./superservice.j2"
         dest="/etc/init.d/superservice"
         mode="0755"
+
   roles :
     - ansible-smartstack

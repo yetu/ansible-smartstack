@@ -1,19 +1,10 @@
 ---
-#
-# This playbook deploys your keys to the vagrant
-#
 
 - name: Provision my keys
   hosts: all
   sudo: True
   vars_files:
     - "test1_var.yml"
-  
-  pre_tasks:
-    - name: superservice 
-      template:
-        src="./superservice.j2"
-        dest="/etc/init.d/superservice"
-        mode="0755"
+
   roles :
     - ansible-smartstack

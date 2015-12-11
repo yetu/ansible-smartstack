@@ -1,0 +1,28 @@
+---
+
+- name: omnibus | Create base source directory
+  file: 
+   path="{{ smartstack_omnibus_src }}"
+   owner="{{ smartstack_user }}"
+   group="{{ smartstack_user }}"
+   mode=0755
+   state=directory
+
+- name: omnibus | Get binary
+  get_url: 
+    url="{{ smartstack_omnibus_url }}"
+    dest="{{ smartstack_omnibus_src }}/{{ omnibus_packagename | default(smartstack_omnibus_url | basename) }}"
+    sha256sum="{{ smartstack_omnibus_sha256 | default(omit) }}"
+  register: omnibus_download
+
+  # ubuntu specific 
+- name: omnibus | Check if smartstack is installed
+  command: dpkg-query -W smartstack
+  register: omnibus_smartstack_check_deb
+  failed_when: omnibus_smartstack_check_deb.rc > 1
+  changed_when: omnibus_smartstack_check_deb.rc == 1
+
+- name: omnibus | Install omnibus deb
+  apt: 
+    deb="{{ smartstack_omnibus_src }}/{{ omnibus_packagename | default(smartstack_omnibus_url | basename) }}"
+  when: omnibus_smartstack_check_deb.rc == 1

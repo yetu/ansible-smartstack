@@ -18,11 +18,11 @@
     dest="{{serf_destination}}"
     mode=0750
     owner="{{smartstack_user}}"
-    group="{{smartstack_user}}" 
+    group="{{smartstack_user}}"
 
 - name: serf | Link the serf the installed version
   file: 
-   src="{{serf_destination}}" 
+   src="{{serf_destination}}"
    dest="/usr/bin/serf"
    state="link"
 
@@ -32,9 +32,9 @@
   copy: 
    content='{{ serf_default_config | to_nice_json }}'
    dest="{{serf_config_file}}"
-   owner="{{smartstack_user}}" 
-   group="{{smartstack_user}}" 
-   mode=0755 
+   owner="{{smartstack_user}}"
+   group="{{smartstack_user}}"
+   mode=0755
   notify: restart serf
 
 - name: serf | Deploy start script
@@ -58,6 +58,6 @@
   service: 
     name=serf
     state=started
-    enabled=true   
+    enabled=true
 
 

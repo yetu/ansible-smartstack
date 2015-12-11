@@ -8,16 +8,26 @@
   sudo: True
   vars_files:
     - "{{inventory_hostname}}-var.yml"
+    - "defaults-var.yml"
 ## If you dont want the run to fail if file does not exisit 
 #    - [ "{{inventory_hostname}}-var.yml", "defaults-var.yml" ]
   vars:
-    localuser: "{{ lookup('ENV','USER') }}"
+    superapp_user     : "{{ lookup('ENV','USER') }}"
+    superapp_pwd      : "/home/{{superapp_user}}"
+    superapp_bin      : "/usr/bin/python"
+    superapp_opts     : "superapp.py"
+    localuser         : "{{ lookup('ENV','USER') }}"
 
   pre_tasks:
+
+    - name: Install git
+      apt:
+        name="git"
+
     - name: Create your local user
       user:
         name="{{localuser}}"
-        home="/home/{{localuser}}"
+        home="{{superapp_pwd}}"
         shell="/bin/bash"
         append="true"
         group="admin"
@@ -30,30 +40,82 @@
         manage_dir=yes
       ignore_errors: yes
 
+    - name : Change PS1
+      lineinfile: 
+        dest="{{superapp_pwd}}/.bashrc"
+        insertafter="EOF"
+        line="export PS1=\"{{ PS1 }}\""
+
     - name: Update apt cache
       apt:
         update_cache=yes
 
+    - name: Install superapp
+      template:
+        src="superapp.py.j2"
+        dest="{{superapp_pwd}}/superapp.py"
+      when: inventory_hostname == "demo1" or inventory_hostname == "demo2"
+
+    - name: Install superapp service
+      template:
+        src="superapp.sh.j2"
+        dest="/etc/init.d/superapp"
+        mode=0755
+      when: inventory_hostname == "demo1" or inventory_hostname == "demo2"
+
+    - name: Enable superapp service
+      service: 
+        name=superapp
+        state=restarted
+      when: inventory_hostname == "demo1" or inventory_hostname == "demo2"
+
+    - name: Enable superapp service
+      service: 
+        name=nginx
+        state=started
+      when: inventory_hostname == "demo3"
+
     - name: Install demo packages
       apt:
-        name="{{item}}"  
+        name="{{item}}"
       with_items: packages_to_install
       when : packages_to_install is defined
 
-    - name : postgresql
+    - name : Configure postgresql
       lineinfile: 
         dest=/etc/postgresql/9.1/main/postgresql.conf
-        regexp='^listen_addresses' 
+        regexp='^listen_addresses'
         line="listen_addresses = '*'"
       register: postgresql_conf
       when: "'postgresql' in packages_to_install"
 
-    - name : postgresql
+    - name : Configure postgresql hba.conf
+      lineinfile: 
+        dest=/etc/postgresql/9.1/main/pg_hba.conf
+        regexp='^host  all  all" 0.0.0.0/0 md5'
+        line="host  all  all 0.0.0.0/0 md5"
+      when: "'postgresql' in packages_to_install"
+
+    - name : Service postgresql
       service: 
         name=postgresql
         state=restarted
       register: postgresql_conf
       when: "'postgresql' in packages_to_install and postgresql_conf | changed"
+
+    - name: Create postgresql db
+      postgresql_db: 
+         name=superapp
+      sudo_user: postgres
+      when: "'postgresql' in packages_to_install"
+
+    - name : Create postgresql user 
+      postgresql_user: 
+        db=superapp
+        name=superapp
+        password=superapp
+      sudo_user: postgres
+      when: "'postgresql' in packages_to_install"
 
   roles :
     - ansible-smartstack
