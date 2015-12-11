@@ -1,7 +1,9 @@
 ---
-nerve_install                           : False
+nerve_install                           : True
+nerve_selected_services                 : [ "superapp" ]
+
 synapse_install                         : True    
-synapse_selected_services               : [ "postgresql" ]
+synapse_selected_services               : [ "postgresql"]
 
 serf_masters                            : [ "192.168.56.150", "192.168.56.151"]
 serf_bind                               : "{{service_ip}}"
@@ -10,13 +12,15 @@ ip_match_rules                          :
                                             - regx      : "192.168.56.*"
                                               reg_match : true
 
-smartstack_services_files               : "services.yml"
+#smartstack_services_files               : "services.yml"
 #####
 #Since this is a demo we will make a list of packages to install
 packages_to_install                     : 
-                                          - "postgresql-client"
+                                          - "python-psycopg2"
+
 ###
 ruby_install                            : True
 
 ##
 color                                   : "#3300CC"
+PS1                                     : '\[\e]0;\u@\h: \w\a\]${debian_chroot:+($debian_chroot)}\u@\[\e[1;34m\]\h\[\e[m\]:\w\$ '

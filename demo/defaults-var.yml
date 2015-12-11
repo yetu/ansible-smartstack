@@ -1,2 +1,56 @@
 ---
 ## Just a place holder file 
+smartstack_services_files         : ""
+services_ports                    : 
+                                      synapse        : 3210
+                                      nerve          : 3211
+                                      haproxy        : 3212
+                                      mysql          : 3306
+                                      superapp       : 8000
+                                      postgresql     : 5432
+
+services   :
+   superapp: 
+        synapse : 
+              discovery          : 
+                method           : "serf"
+              haproxy            :
+                server_options   : "check inter 10s fastinter 5s downinter 8s rise 3 fall 2"
+                listen           :
+                                   - "mode tcp"
+                                   - "timeout  connect 10s"
+                                   - "timeout  client  1h"
+                                   - "timeout  server  1h"
+                port              : "{{ services_ports['superapp'] }}"
+        nerve:
+              port               : "{{ services_ports['superapp'] }}"
+              reporter_type      : "serf"
+              check_interval     : 1
+              checks:
+                 - type     : "http"
+                   uri      : "/health"
+                   timeout  : 1
+                   rise     : 2
+                   fall     : 3   
+
+   postgresql: 
+        synapse : 
+              discovery          : 
+                method    : "serf"
+              haproxy            :
+                server_options   : "check inter 10s fastinter 5s downinter 8s rise 3 fall 2"
+                listen           :
+                                   - "mode tcp"
+                                   - "timeout  connect 10s"
+                                   - "timeout  client  1h"
+                                   - "timeout  server  1h"
+                port              : "{{ services_ports['postgresql'] }}"
+        nerve:
+              port               : "{{ services_ports['postgresql'] }}"
+              reporter_type      : "serf"
+              check_interval     : 1
+              checks:
+                 - type     : "tcp"
+                   timeout  : 5
+                   rise     : 2
+                   fall     : 2     
